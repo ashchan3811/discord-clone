@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import FileUpload from "@/components/shared/FileUpload";
 
 const formSchema = z.object({
   name: z.string().min(1, "Server name is required"),
@@ -73,7 +74,21 @@ const InitialModal = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className={"space-y-8"}>
             <div className="space-y-8 px-6">
               <div className="flex items-center justify-center text-center">
-                TODO: Image Upload
+                <FormField
+                  control={form.control}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <FileUpload
+                          endpoint={"serverImage"}
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                  name={"imageUrl"}
+                />
               </div>
 
               <FormField
