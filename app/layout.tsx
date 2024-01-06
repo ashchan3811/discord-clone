@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import ToastrProvider from "@/components/providers/ToastrProvider";

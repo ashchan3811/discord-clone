@@ -58,6 +58,21 @@ module.exports = withUt({
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        16: "16px",
+        24: "24px",
+      },
+      height: {
+        24: "24px",
+        48: "48px",
+        72: "72px",
+      },
+      width: {
+        24: "24px",
+        48: "48px",
+        72: "72px",
+      },
+      padding: {
+        72: "72px",
       },
       keyframes: {
         "accordion-down": {

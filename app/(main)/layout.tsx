@@ -7,10 +7,10 @@ type MainLayoutProps = PropsWithChildren<{}>;
 const MainLayout = ({ children }: MainLayoutProps) => {
   return (
     <div className={"h-full"}>
-      <div className="hidden md:flex h-full w-[72px] z-30 flex-col fixed inset-y-0">
+      <div className="hidden md:flex h-full w-72 z-30 flex-col fixed inset-y-0">
         <NavigationSidebar />
       </div>
-      <main className={"md:pl-[72px] h-full"}>{children}</main>
+      <main className={"md:pl-72 h-full"}>{children}</main>
     </div>
   );
 };
