@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { getCurrentProfile } from "@/lib/actions/get-current-profile";
 import db from "@/lib/db";
 
-import NavigationActions from "@/components/navigation/NavigationActions";
+import NavigationAction from "@/components/navigation/NavigationAction";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import NavigationItem from "@/components/navigation/NavigationItem";
@@ -33,7 +33,7 @@ const NavigationSidebar = async () => {
         "space-y-4 flex flex-col items-center h-full text-primary dark:bg-[#1E1F22] py-3"
       }
     >
-      <NavigationActions />
+      <NavigationAction />
       <Separator
         className={
           "h-[2px] bg-zinc-300 dark:bg-zinc-700 rounded-md w-10 mx-auto"

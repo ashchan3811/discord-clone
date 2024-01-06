@@ -50,6 +50,7 @@ enum MemberRole {
   ADMIN
   MEMBER
   GUEST
+  MODERATOR
 }
 
 model Member {
@@ -71,7 +72,7 @@ model Member {
 
 enum ChannelType {
   TEXT
-  VOICE
+  AUDIO
   VIDEO
 }
 

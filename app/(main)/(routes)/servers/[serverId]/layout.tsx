@@ -1,0 +1,45 @@
+import React, { PropsWithChildren } from "react";
+import { redirect } from "next/navigation";
+
+import db from "@/lib/db";
+import { getCurrentProfile } from "@/lib/actions/get-current-profile";
+
+import ServerSidebar from "@/components/sever/ServerSidebar";
+
+type ServerLayoutProps = PropsWithChildren<{
+  params: { serverId: string };
+}>;
+
+const ServerIdLayout = async ({ children, params }: ServerLayoutProps) => {
+  const profile = await getCurrentProfile();
+
+  if (!profile) {
+    return redirect("/");
+  }
+
+  const server = await db.server.findUnique({
+    where: {
+      id: params.serverId,
+      members: {
+        some: {
+          profileId: profile.id,
+        },
+      },
+    },
+  });
+
+  if (!server) {
+    return redirect("/");
+  }
+
+  return (
+    <div className={"h-full"}>
+      <div className="hidden md:flex h-full w-60 z-20 flex-col fixed inset-y-0">
+        <ServerSidebar serverId={params.serverId} />
+      </div>
+      <main className="h-full md:pl-60">{children}</main>
+    </div>
+  );
+};
+
+export default ServerIdLayout;

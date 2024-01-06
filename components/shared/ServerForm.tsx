@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,13 +36,14 @@ const formSchema = z.object({
 
 type FormType = z.infer<typeof formSchema>;
 
-const InitialModal = () => {
-  const [isMounted, setIsMounted] = React.useState(false);
-  const router = useRouter();
+type ServerFormProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  onServerCreate: () => void;
+};
 
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+const ServerForm = ({ isOpen, onClose, onServerCreate }: ServerFormProps) => {
+  const router = useRouter();
 
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
@@ -61,7 +62,7 @@ const InitialModal = () => {
         form.reset();
         router.refresh();
 
-        window.location.reload();
+        onServerCreate();
       }
     } catch (err) {
       console.log(err);
@@ -69,12 +70,8 @@ const InitialModal = () => {
     }
   };
 
-  if (!isMounted) {
-    return null;
-  }
-
   return (
-    <Dialog open={true}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className={"bg-white text-black p-0 overflow-hidden"}>
         <DialogHeader className={"pt-8 px-6"}>
           <DialogTitle className={"text-2xl text-center font-bold"}>
@@ -100,6 +97,7 @@ const InitialModal = () => {
                           onChange={field.onChange}
                         />
                       </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                   name={"imageUrl"}
@@ -146,4 +144,4 @@ const InitialModal = () => {
   );
 };
 
-export default InitialModal;
+export default ServerForm;
