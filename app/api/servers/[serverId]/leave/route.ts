@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { MemberRole } from "@prisma/client";
 
 import { ServerIdParams } from "@/types";
 
