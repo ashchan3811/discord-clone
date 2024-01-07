@@ -27,8 +27,6 @@ const InvitePeopleModal = () => {
   const [copied, setCopied] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
-  if (!data) return null;
-
   const isModalOpen = isOpen && type === "invitePeople";
   const { server } = data;
 

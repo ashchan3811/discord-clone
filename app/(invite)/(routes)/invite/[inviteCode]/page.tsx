@@ -1,7 +1,6 @@
 import React from "react";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { MemberRole } from "@prisma/client";
 
 import { getCurrentProfile } from "@/lib/actions/get-current-profile";
 import db from "@/lib/db";
@@ -17,6 +16,19 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
   }
 
   if (!params.inviteCode) {
+    return redirect("/");
+  }
+
+  const isValidInviteCode = await db.server.findFirst({
+    where: {
+      inviteCode: params.inviteCode,
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (!isValidInviteCode) {
     return redirect("/");
   }
 
@@ -41,7 +53,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
     },
     data: {
       members: {
-        create: [{ profileId: profile.id, role: MemberRole.MEMBER }],
+        create: [{ profileId: profile.id }],
       },
     },
   });
