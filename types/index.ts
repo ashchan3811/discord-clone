@@ -20,3 +20,7 @@ export type PropsWithParams<T> = {
 export type ServerIdParams = PropsWithParams<{
   serverId: string;
 }>;
+
+export type MemberIdParams = PropsWithParams<{
+  memberId: string;
+}>;
