@@ -2,9 +2,13 @@
 
 import React from "react";
 import { Check, Copy, RefreshCw } from "lucide-react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 import { useModalStore } from "@/hooks/useModalStore";
 import { useOrigin } from "@/hooks/useOrigin";
+
+import { cn } from "@/lib/utils";
 
 import {
   Dialog,
@@ -15,8 +19,6 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import toast from "react-hot-toast";
-import axios from "axios";
 
 const InvitePeopleModal = () => {
   const { isOpen, onOpen, onClose, type, data } = useModalStore();
@@ -98,7 +100,9 @@ const InvitePeopleModal = () => {
             onClick={onGenerate}
           >
             Generate a new invite link
-            <RefreshCw className={"w-4 h-4 ml-2"} />
+            <RefreshCw
+              className={cn("w-4 h-4 ml-2", isLoading && "animate-spin")}
+            />
           </Button>
         </div>
       </DialogContent>

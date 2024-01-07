@@ -25,6 +25,9 @@ const NavigationSidebar = async () => {
         },
       },
     },
+    orderBy: {
+      updatedAt: "desc",
+    },
   });
 
   return (

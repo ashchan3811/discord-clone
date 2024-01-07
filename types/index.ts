@@ -12,3 +12,7 @@ export type ServerWithMembersWithProfiles = Server & {
 export type MemberWithProfile = Member & {
   profile: Profile;
 };
+
+export type PropsWithParams<T> = {
+  params: T;
+};
