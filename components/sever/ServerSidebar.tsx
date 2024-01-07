@@ -4,7 +4,12 @@ import { ChannelType } from "@prisma/client";
 
 import { getCurrentProfile, getServerWithMembers } from "@/lib/actions";
 
+import { channelIconMap, serverSearchRoleIconMap } from "@/types/icon-maps";
+import { ISearchItem } from "@/types";
+
+import { ScrollArea } from "@/components/ui/scroll-area";
 import ServerHeader from "@/components/sever/ServerHeader";
+import ServerSearch from "@/components/sever/ServerSearch";
 
 type ServerSidebarProps = {
   serverId: string;
@@ -41,6 +46,45 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   const role = server.members?.find((member) => member.profileId === profile.id)
     ?.role;
 
+  const serverSearchData: ISearchItem[] = [
+    {
+      label: "Text Channels",
+      type: "channel",
+      data: textChannels?.map((channel) => ({
+        icon: channelIconMap[channel.type],
+        name: channel.name,
+        id: channel.id,
+      })),
+    },
+    {
+      label: "Voice Channels",
+      type: "channel",
+      data: audioChannels?.map((channel) => ({
+        icon: channelIconMap[channel.type],
+        name: channel.name,
+        id: channel.id,
+      })),
+    },
+    {
+      label: "Video Channels",
+      type: "channel",
+      data: videoChannels?.map((channel) => ({
+        icon: channelIconMap[channel.type],
+        name: channel.name,
+        id: channel.id,
+      })),
+    },
+    {
+      label: "Members",
+      type: "member",
+      data: members?.map((member) => ({
+        icon: serverSearchRoleIconMap[member.role],
+        name: member.profile?.name,
+        id: member.id,
+      })),
+    },
+  ];
+
   return (
     <div
       className={
@@ -48,6 +92,12 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
       }
     >
       <ServerHeader server={server} role={role} />
+
+      <ScrollArea className={"flex-1 px-3"}>
+        <div className="mt-2">
+          <ServerSearch data={serverSearchData} />
+        </div>
+      </ScrollArea>
     </div>
   );
 };

@@ -8,7 +8,6 @@ import {
   Loader2,
   MoreVertical,
   Shield,
-  ShieldAlert,
   ShieldCheck,
   ShieldQuestion,
 } from "lucide-react";
@@ -19,6 +18,7 @@ import { useRouter } from "next/navigation";
 
 import { useModalStore } from "@/hooks/useModalStore";
 import { ServerWithMembersWithProfiles } from "@/types";
+import { manageMembersRoleIconMap } from "@/types/icon-maps";
 
 import {
   Dialog,
@@ -40,15 +40,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
-const roleIconMap = {
-  [MemberRole.GUEST]: null,
-  [MemberRole.MEMBER]: null,
-  [MemberRole.MODERATOR]: (
-    <ShieldCheck className={"h-4 w-4 ml-1 text-indigo-500"} />
-  ),
-  [MemberRole.ADMIN]: <ShieldAlert className={"h-4 w-4 ml-1 text-rose-500"} />,
-};
 
 const ManageMembersModal = () => {
   const router = useRouter();
@@ -120,7 +111,7 @@ const ManageMembersModal = () => {
                   className={"text-xs font-semibold flex items-center gap-x-1"}
                 >
                   <span>{member.profile?.name}</span>
-                  <span>{roleIconMap[member.role]}</span>
+                  <span>{manageMembersRoleIconMap[member.role]}</span>
                 </div>
                 <p className={"text-xs text-zinc-500"}>
                   {member?.profile?.email}

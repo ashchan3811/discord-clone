@@ -1,4 +1,5 @@
 import { Member, Profile, Server } from "@prisma/client";
+import React from "react";
 
 export type InputPropTypes<T> = {
   value: T;
@@ -24,3 +25,17 @@ export type ServerIdParams = PropsWithParams<{
 export type MemberIdParams = PropsWithParams<{
   memberId: string;
 }>;
+
+export type ISearchItemTypes = "channel" | "member";
+
+export type ISearchItem = {
+  label: string;
+  type: ISearchItemTypes;
+  data:
+    | {
+        icon: React.ReactNode;
+        name: string;
+        id: string;
+      }[]
+    | undefined;
+};
