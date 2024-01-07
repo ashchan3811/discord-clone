@@ -1,13 +1,19 @@
 import React from "react";
 
 import { useModalStore } from "@/hooks/useModalStore";
+
 import ServerForm from "@/components/shared/ServerForm";
 
 const CreateServerModal = () => {
-  const { isOpen, onClose } = useModalStore();
+  const { isOpen, type, onClose } = useModalStore();
+  const isModalOpen = isOpen && type === "createServer";
 
   return (
-    <ServerForm isOpen={isOpen} onClose={onClose} onServerCreate={onClose} />
+    <ServerForm
+      isOpen={isModalOpen}
+      onClose={onClose}
+      onServerCreate={onClose}
+    />
   );
 };
 

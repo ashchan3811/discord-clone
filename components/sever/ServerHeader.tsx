@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { MemberRole } from "@prisma/client";
 import {
@@ -21,12 +23,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useModalStore } from "@/hooks/useModalStore";
 
 type ServerHeaderProps = {
   server: ServerWithMembersWithProfiles;
   role?: string;
 };
 const ServerHeader = ({ server, role }: ServerHeaderProps) => {
+  const { onOpen } = useModalStore();
+
   const isAdmin = role === MemberRole.ADMIN;
   const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
@@ -56,6 +61,7 @@ const ServerHeader = ({ server, role }: ServerHeaderProps) => {
             className={
               "text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer"
             }
+            onClick={() => onOpen("invitePeople", { server })}
           >
             Invite People
             <UserPlus className={"h-4 w-4 ml-auto"} />

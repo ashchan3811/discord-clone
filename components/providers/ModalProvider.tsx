@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 
 import CreateServerModal from "@/components/modals/CreateServerModal";
+import InvitePeopleModal from "@/components/modals/InvitePeopleModal";
 
 const ModalProvider = () => {
   const [isMounted, setIsMounted] = React.useState(false);
@@ -16,6 +17,7 @@ const ModalProvider = () => {
   return (
     <>
       <CreateServerModal />
+      <InvitePeopleModal />
     </>
   );
 };
