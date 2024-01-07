@@ -18,7 +18,7 @@ const InitialServerModal = () => {
     <ServerForm
       isOpen={true}
       onClose={() => {}}
-      onServerCreate={() => {
+      onFormSubmit={() => {
         window.location.reload();
       }}
     />

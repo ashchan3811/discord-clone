@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { Server } from "@prisma/client";
 
 import {
   Dialog,
@@ -39,10 +40,16 @@ type FormType = z.infer<typeof formSchema>;
 type ServerFormProps = {
   isOpen: boolean;
   onClose: () => void;
-  onServerCreate: () => void;
+  onFormSubmit: () => void;
+  server?: Server;
 };
 
-const ServerForm = ({ isOpen, onClose, onServerCreate }: ServerFormProps) => {
+const ServerForm = ({
+  isOpen,
+  onClose,
+  onFormSubmit,
+  server,
+}: ServerFormProps) => {
   const router = useRouter();
 
   const form = useForm<FormType>({
@@ -53,16 +60,33 @@ const ServerForm = ({ isOpen, onClose, onServerCreate }: ServerFormProps) => {
     },
   });
 
+  useEffect(() => {
+    if (server) {
+      form.setValue("name", server.name);
+      form.setValue("imageUrl", server.imageUrl);
+    }
+  }, [server, form]);
+
   const isSubmitting = form.formState.isSubmitting;
 
   const onSubmit = async (values: FormType) => {
     try {
-      const res = await axios.post("/api/servers", values);
-      if (res) {
-        form.reset();
-        router.refresh();
+      if (server) {
+        const res = await axios.patch(`/api/servers/${server?.id}`, values);
+        if (res) {
+          form.reset();
+          router.refresh();
 
-        onServerCreate();
+          onFormSubmit();
+        }
+      } else {
+        const res = await axios.post("/api/servers", values);
+        if (res) {
+          form.reset();
+          router.refresh();
+
+          onFormSubmit();
+        }
       }
     } catch (err) {
       console.log(err);
@@ -134,7 +158,7 @@ const ServerForm = ({ isOpen, onClose, onServerCreate }: ServerFormProps) => {
 
             <DialogFooter className={"bg-gray-100 px-6 py-4"}>
               <Button variant={"primary"} disabled={isSubmitting}>
-                Create
+                {server ? "Save" : "Create"}
               </Button>
             </DialogFooter>
           </form>

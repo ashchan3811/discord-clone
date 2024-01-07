@@ -9,11 +9,7 @@ const CreateServerModal = () => {
   const isModalOpen = isOpen && type === "createServer";
 
   return (
-    <ServerForm
-      isOpen={isModalOpen}
-      onClose={onClose}
-      onServerCreate={onClose}
-    />
+    <ServerForm isOpen={isModalOpen} onClose={onClose} onFormSubmit={onClose} />
   );
 };
 

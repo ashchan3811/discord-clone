@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { v4 as uuid } from "uuid";
 
 import { getCurrentProfile } from "@/lib/actions/get-current-profile";
 import db from "@/lib/db";
@@ -17,19 +16,22 @@ export async function PATCH(req: Request, { params }: ServerIdParams) {
       return new NextResponse("Server ID Missing", { status: 404 });
     }
 
+    const { name, imageUrl } = await req.json();
+
     const server = await db.server.update({
       where: {
         id: params.serverId,
         profileId: profile.id,
       },
       data: {
-        inviteCode: uuid(),
+        name,
+        imageUrl,
       },
     });
 
     return NextResponse.json(server);
   } catch (err) {
-    console.log("SERVER ID INVITE CODE PATCH", err);
+    console.log("SERVER ID PATCH", err);
     return new NextResponse("Internal Error", { status: 500 });
   }
 }
