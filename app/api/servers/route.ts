@@ -13,6 +13,10 @@ export async function POST(req: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    if (!name || !imageUrl) {
+      return new NextResponse("Missing required data.", { status: 400 });
+    }
+
     const server = await db.server.create({
       data: {
         profileId: profile.id,
