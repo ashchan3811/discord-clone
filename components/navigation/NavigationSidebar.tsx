@@ -1,15 +1,14 @@
 import React from "react";
 import { redirect } from "next/navigation";
+import { UserButton } from "@clerk/nextjs";
 
-import { getCurrentProfile } from "@/lib/actions/get-current-profile";
-import db from "@/lib/db";
+import { getCurrentProfile, getServers } from "@/lib/actions";
 
 import NavigationAction from "@/components/navigation/NavigationAction";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import NavigationItem from "@/components/navigation/NavigationItem";
 import { ThemeModeToggle } from "@/components/shared/ThemeModeToggle";
-import { UserButton } from "@clerk/nextjs";
 
 const NavigationSidebar = async () => {
   const profile = await getCurrentProfile();
@@ -17,18 +16,7 @@ const NavigationSidebar = async () => {
     return redirect("/");
   }
 
-  const servers = await db.server.findMany({
-    where: {
-      members: {
-        some: {
-          profileId: profile.id,
-        },
-      },
-    },
-    orderBy: {
-      updatedAt: "desc",
-    },
-  });
+  const servers = await getServers(profile);
 
   return (
     <div

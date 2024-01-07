@@ -2,8 +2,7 @@ import React from "react";
 import { redirect } from "next/navigation";
 import { ChannelType } from "@prisma/client";
 
-import { getCurrentProfile } from "@/lib/actions/get-current-profile";
-import db from "@/lib/db";
+import { getCurrentProfile, getServerWithMembers } from "@/lib/actions";
 
 import ServerHeader from "@/components/sever/ServerHeader";
 
@@ -17,31 +16,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
     return redirect("/");
   }
 
-  const server = await db.server.findUnique({
-    where: {
-      id: serverId,
-      members: {
-        some: {
-          profileId: profile.id,
-        },
-      },
-    },
-    include: {
-      channels: {
-        orderBy: {
-          createdAt: "asc",
-        },
-      },
-      members: {
-        include: {
-          profile: true,
-        },
-        orderBy: {
-          role: "asc",
-        },
-      },
-    },
-  });
+  const server = await getServerWithMembers(profile, serverId);
 
   if (!server) {
     return redirect("/");

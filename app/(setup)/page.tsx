@@ -1,12 +1,12 @@
 import React from "react";
 import { redirect } from "next/navigation";
 
-import { initialProfile } from "@/lib/initial-profile";
+import { setInitialProfile } from "@/lib/actions/set-initial-profile";
 import db from "@/lib/db";
 import InitialServerModal from "@/components/modals/InitialServerModal";
 
 const SetupPage = async () => {
-  const profile = await initialProfile();
+  const profile = await setInitialProfile();
 
   const server = await db.server.findFirst({
     where: {
