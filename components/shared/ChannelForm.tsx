@@ -53,6 +53,7 @@ type ChannelFormProps = {
   onClose: () => void;
   onFormSubmit: () => void;
   channel?: Channel;
+  channelType?: ChannelType;
 };
 
 const ChannelForm = ({
@@ -60,6 +61,7 @@ const ChannelForm = ({
   onClose,
   onFormSubmit,
   channel,
+  channelType,
 }: ChannelFormProps) => {
   const router = useRouter();
   const params = useParams();
@@ -75,6 +77,10 @@ const ChannelForm = ({
   useEffect(() => {
     if (channel) {
       form.setValue("name", channel.name);
+    }
+
+    if (channelType) {
+      form.setValue("type", channelType);
     }
   }, [channel, form]);
 

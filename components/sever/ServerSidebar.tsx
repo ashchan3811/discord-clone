@@ -10,6 +10,8 @@ import { ISearchItem } from "@/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ServerHeader from "@/components/sever/ServerHeader";
 import ServerSearch from "@/components/sever/ServerSearch";
+import { Separator } from "@/components/ui/separator";
+import ServerSection from "@/components/sever/ServerSection";
 
 type ServerSidebarProps = {
   serverId: string;
@@ -97,6 +99,19 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
         <div className="mt-2">
           <ServerSearch data={serverSearchData} />
         </div>
+
+        <Separator className={"bg-zinc-200 dark:bg-zinc-700 rounded-md my-2"} />
+
+        {!!textChannels.length && (
+          <div className={"mb-2"}>
+            <ServerSection
+              label={"Text Channels"}
+              sectionType={"channel"}
+              channelType={ChannelType.TEXT}
+              role={role}
+            />
+          </div>
+        )}
       </ScrollArea>
     </div>
   );
