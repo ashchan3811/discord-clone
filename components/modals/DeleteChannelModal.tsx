@@ -9,20 +9,20 @@ import { useModalStore } from "@/hooks/useModalStore";
 
 import DeleteModal from "@/components/shared/DeleteModal";
 
-const DeleteServerModal = () => {
+const DeleteChannelModal = () => {
   const router = useRouter();
 
   const { isOpen, onClose, type, data } = useModalStore();
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const isModalOpen = isOpen && type === "deleteServer";
-  const { server } = data;
+  const isModalOpen = isOpen && type === "deleteChannel";
+  const { channel } = data;
 
   const onDelete = async () => {
     try {
       setIsLoading(true);
 
-      await axios.delete(`/api/servers/${server?.id}`);
+      await axios.delete(`/api/channels/${channel?.id}`);
 
       onClose();
 
@@ -46,11 +46,11 @@ const DeleteServerModal = () => {
     >
       Are you sure you want to do this? <br />
       <span className={"font-semibold text-indigo-500"}>
-        {server?.name}
+        {channel?.name}
       </span>{" "}
       will be permanently deleted.
     </DeleteModal>
   );
 };
 
-export default DeleteServerModal;
+export default DeleteChannelModal;

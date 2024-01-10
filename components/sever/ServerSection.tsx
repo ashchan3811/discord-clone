@@ -13,7 +13,7 @@ type ServerSectionProps = {
   label: string;
   role?: MemberRole;
   sectionType: ISearchItemTypes;
-  channelType: ChannelType;
+  channelType?: ChannelType;
   server?: ServerWithMembersWithProfiles;
 };
 
@@ -55,7 +55,7 @@ const ServerSection = ({
       )}
 
       {role == MemberRole.ADMIN && sectionType == "member" && (
-        <ActionTooltip label={"Invite Member"} side={"top"}>
+        <ActionTooltip label={"Manage Member"} side={"top"}>
           <button
             className={cn(
               "text-zinc-500 hover:text-zinc-600",

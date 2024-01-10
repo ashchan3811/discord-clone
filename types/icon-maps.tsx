@@ -38,3 +38,9 @@ export const channelIconMap = {
   [ChannelType.AUDIO]: <Mic className={"h-4 w-4 mr-2"} />,
   [ChannelType.VIDEO]: <Video className={"h-4 w-4 mr-2"} />,
 };
+
+export const serverChannelIconMap = {
+  [ChannelType.TEXT]: Hash,
+  [ChannelType.AUDIO]: Mic,
+  [ChannelType.VIDEO]: Video,
+};

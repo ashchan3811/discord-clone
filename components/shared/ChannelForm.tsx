@@ -77,12 +77,13 @@ const ChannelForm = ({
   useEffect(() => {
     if (channel) {
       form.setValue("name", channel.name);
+      form.setValue("type", channel.type);
     }
 
     if (channelType) {
       form.setValue("type", channelType);
     }
-  }, [channel, form]);
+  }, [channel, form, channelType]);
 
   const isSubmitting = form.formState.isSubmitting;
 
