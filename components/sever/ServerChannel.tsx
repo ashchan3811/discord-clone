@@ -2,14 +2,14 @@
 
 import React from "react";
 import { Channel, MemberRole, Server } from "@prisma/client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Edit, Lock, Trash } from "lucide-react";
 
 import { serverChannelIconMap } from "@/types/icon-maps";
 import { cn } from "@/lib/utils";
 
 import ActionTooltip from "@/components/shared/ActionTooltip";
-import { useModalStore } from "@/hooks/useModalStore";
+import { ModalType, useModalStore } from "@/hooks/useModalStore";
 
 type ServerChannelProps = {
   channel: Channel;
@@ -19,18 +19,24 @@ type ServerChannelProps = {
 
 const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
   const params = useParams();
-  // const router = useRouter();
+  const router = useRouter();
 
   const { onOpen } = useModalStore();
 
   const Icon = serverChannelIconMap[channel.type];
 
   const handleClick = () => {
-    // router.push(`/servers/${server?.id}/channels/${channel?.id}`);
+    router.push(`/servers/${server?.id}/channels/${channel?.id}`);
+  };
+
+  const onAction = (event: React.MouseEvent, modalType: ModalType) => {
+    event.stopPropagation();
+    onOpen(modalType, { server, channel });
   };
 
   return (
     <button
+      type={"button"}
       onClick={handleClick}
       className={cn(
         "group px-2 py-2 rounded-md flex",
@@ -67,7 +73,7 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
                 "hover:text-zinc-600 dark:hover:text-zinc-300",
                 "transition",
               )}
-              onClick={() => onOpen("editChannel", { server, channel })}
+              onClick={(event) => onAction(event, "editChannel")}
             />
           </ActionTooltip>
           <ActionTooltip label={"Delete"}>
@@ -78,7 +84,7 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
                 "hover:text-rose-600 dark:hover:text-rose-300",
                 "transition",
               )}
-              onClick={() => onOpen("deleteChannel", { server, channel })}
+              onClick={(event) => onAction(event, "deleteChannel")}
             />
           </ActionTooltip>
         </div>
