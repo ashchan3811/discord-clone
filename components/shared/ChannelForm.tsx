@@ -6,8 +6,8 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { useRouter, useParams } from "next/navigation";
-import { Channel, ChannelType } from "@prisma/client";
+import { useRouter } from "next/navigation";
+import { Channel, ChannelType, Server } from "@prisma/client";
 
 import {
   Dialog,
@@ -52,6 +52,7 @@ type ChannelFormProps = {
   isOpen: boolean;
   onClose: () => void;
   onFormSubmit: () => void;
+  server?: Server;
   channel?: Channel;
   channelType?: ChannelType;
 };
@@ -60,11 +61,11 @@ const ChannelForm = ({
   isOpen,
   onClose,
   onFormSubmit,
+  server,
   channel,
   channelType,
 }: ChannelFormProps) => {
   const router = useRouter();
-  const params = useParams();
 
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
@@ -93,7 +94,7 @@ const ChannelForm = ({
         const url = qs.stringifyUrl({
           url: `/api/channels/${channel?.id}`,
           query: {
-            serverId: params.serverId,
+            serverId: server?.id,
           },
         });
 
@@ -108,7 +109,7 @@ const ChannelForm = ({
         const url = qs.stringifyUrl({
           url: "/api/channels",
           query: {
-            serverId: params.serverId,
+            serverId: server?.id,
           },
         });
 

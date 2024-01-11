@@ -8,9 +8,9 @@ import ChannelForm from "@/components/shared/ChannelForm";
 
 const CreateServerModal = () => {
   const { isOpen, type, onClose, data } = useModalStore();
-  const isModalOpen = isOpen && type === "createChannel";
+  const isModalOpen = isOpen && type === "editChannel";
 
-  const { channelType, server } = data;
+  const { channel, server } = data;
 
   return (
     <ChannelForm
@@ -18,7 +18,7 @@ const CreateServerModal = () => {
       onClose={onClose}
       onFormSubmit={onClose}
       server={server}
-      channelType={channelType}
+      channel={channel}
     />
   );
 };

@@ -14,8 +14,8 @@ export type ModalType =
 
 type ModalData = {
   server?: Server;
-  channelType?: ChannelType;
   channel?: Channel;
+  channelType?: ChannelType;
 };
 
 type ModalStore = {

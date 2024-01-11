@@ -22,6 +22,10 @@ export type ServerIdParams = PropsWithParams<{
   serverId: string;
 }>;
 
+export type ChannelIdParams = PropsWithParams<{
+  channelId: string;
+}>;
+
 export type MemberIdParams = PropsWithParams<{
   memberId: string;
 }>;

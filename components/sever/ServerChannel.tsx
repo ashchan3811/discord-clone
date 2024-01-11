@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Channel, MemberRole, Server } from "@prisma/client";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { Edit, Lock, Trash } from "lucide-react";
 
 import { serverChannelIconMap } from "@/types/icon-maps";
@@ -19,14 +19,14 @@ type ServerChannelProps = {
 
 const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
   const params = useParams();
-  const router = useRouter();
+  // const router = useRouter();
 
   const { onOpen } = useModalStore();
 
   const Icon = serverChannelIconMap[channel.type];
 
   const handleClick = () => {
-    router.push(`/servers/${server?.id}/channels/${channel?.id}`);
+    // router.push(`/servers/${server?.id}/channels/${channel?.id}`);
   };
 
   return (
@@ -78,7 +78,7 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
                 "hover:text-rose-600 dark:hover:text-rose-300",
                 "transition",
               )}
-              onClick={() => onOpen("deleteChannel", { channel })}
+              onClick={() => onOpen("deleteChannel", { server, channel })}
             />
           </ActionTooltip>
         </div>
