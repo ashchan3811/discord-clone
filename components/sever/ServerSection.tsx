@@ -46,7 +46,7 @@ const ServerSection = ({
               "transition",
             )}
             onClick={() => {
-              onOpen("createChannel", { server, channelType });
+              onOpen("createChannel", { channelType });
             }}
           >
             <Plus className={"h-4 w-4"} />
