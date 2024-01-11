@@ -24,7 +24,7 @@ const DeleteChannelModal = () => {
       setIsLoading(true);
 
       const url = qs.stringifyUrl({
-        url: "/api/channels/${channel?.id}",
+        url: `/api/channels/${channel?.id}`,
         query: {
           serverId: server?.id,
         },
@@ -35,7 +35,6 @@ const DeleteChannelModal = () => {
       onClose();
 
       router.refresh();
-      router.push(`/servers/${server?.id}`);
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong!");
