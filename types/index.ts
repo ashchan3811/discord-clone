@@ -43,3 +43,5 @@ export type ISearchItem = {
       }[]
     | undefined;
 };
+
+export type ServerIdChannelIdParams = ServerIdParams & ChannelIdParams;
