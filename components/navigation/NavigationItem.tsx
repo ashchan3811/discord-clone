@@ -32,14 +32,14 @@ const NavigationItem = ({ id, name, imageUrl }: NavigationItemProps) => {
         <div
           className={cn(
             "absolute left-0 bg-primary rounded-r-full transition-all w-[4px]",
-            params.serverId !== id && "group-hover:h-[20px]",
-            params.serverId === id ? "h-[36px]" : "h-[8px]",
+            params?.serverId !== id && "group-hover:h-[20px]",
+            params?.serverId === id ? "h-[36px]" : "h-[8px]",
           )}
         />
         <div
           className={cn(
             "relative group flex mx-3 h-48 w-48 rounded-24 group-hover:rounded-16 transition-all overflow-hidden",
-            params.serverId === id && "bg-primary/10 text-primary rounded-16",
+            params?.serverId === id && "bg-primary/10 text-primary rounded-16",
           )}
         >
           <Image fill src={imageUrl} alt={"channel"} />

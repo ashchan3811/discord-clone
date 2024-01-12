@@ -8,7 +8,8 @@ import { cn } from "@/lib/utils";
 
 import ToastrProvider from "@/components/providers/ToastrProvider";
 import ModalProvider from "@/components/providers/ModalProvider";
-import { ThemeProvider } from "@/components/providers/ThemeProvider";
+import ThemeProvider from "@/components/providers/ThemeProvider";
+import SocketProvider from "@/components/providers/SocketProvider";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -33,9 +34,11 @@ export default function RootLayout({
             disableTransitionOnChange={true}
             storageKey={"discord-clone-theme"}
           >
-            <ToastrProvider />
-            <ModalProvider />
-            {children}
+            <SocketProvider>
+              <ToastrProvider />
+              <ModalProvider />
+              {children}
+            </SocketProvider>
           </ThemeProvider>
         </body>
       </html>

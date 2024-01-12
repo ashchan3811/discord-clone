@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 
 import UserAvatar from "@/components/shared/UserAvatar";
 import MobileToggle from "@/components/shared/MobileToggle";
+import SocketIndicator from "@/components/shared/SocketIndicator";
 
 type ChatHeaderProps = {
   serverId: string;
@@ -32,6 +33,10 @@ const ChatHeader = ({ serverId, name, type, imageUrl }: ChatHeaderProps) => {
       )}
 
       <p className="font-semibold text-md text-black dark:text-white">{name}</p>
+
+      <div className="ml-auto flex items-center">
+        <SocketIndicator />
+      </div>
     </div>
   );
 };
