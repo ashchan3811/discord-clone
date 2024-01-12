@@ -45,3 +45,4 @@ export type ISearchItem = {
 };
 
 export type ServerIdChannelIdParams = ServerIdParams & ChannelIdParams;
+export type ServerIdMemberIdParams = ServerIdParams & MemberIdParams;
