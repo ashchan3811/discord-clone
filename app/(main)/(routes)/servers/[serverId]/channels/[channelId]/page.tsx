@@ -5,10 +5,15 @@ import { redirect } from "next/navigation";
 import { getCurrentProfile } from "@/lib/actions";
 import db from "@/lib/db";
 
-import { CHAT_API_URLS, ServerIdChannelIdParams } from "@/types";
+import {
+  CHAT_SOCKET_URLS,
+  CHAT_API_URLS,
+  ServerIdChannelIdParams,
+} from "@/types";
 
 import ChatHeader from "@/components/chat/ChatHeader";
 import ChatInput from "@/components/chat/ChatInput";
+import ChatMessages from "@/components/chat/ChatMessages";
 
 const ChannelIdPage = async ({ params }: ServerIdChannelIdParams) => {
   const profile = await getCurrentProfile();
@@ -34,6 +39,11 @@ const ChannelIdPage = async ({ params }: ServerIdChannelIdParams) => {
     return redirect(`/`);
   }
 
+  const queryParams = {
+    serverId: channel.serverId,
+    channelId: channel.id,
+  };
+
   return (
     <div className={"bg-white dark:bg-[#313338] flex flex-col h-full"}>
       <ChatHeader
@@ -42,13 +52,23 @@ const ChannelIdPage = async ({ params }: ServerIdChannelIdParams) => {
         type={"channel"}
       />
 
-      <div className="flex-1">Messages</div>
+      <ChatMessages
+        member={member}
+        name={channel.name}
+        chatId={channel.id}
+        type={"channel"}
+        apiUrl={CHAT_API_URLS.channel}
+        socketUrl={CHAT_SOCKET_URLS.channel}
+        socketQuery={queryParams}
+        paramKey={"channelId"}
+        paramValue={channel.id}
+      />
 
       <ChatInput
         name={channel.name}
         type={"channel"}
-        apiUrl={CHAT_API_URLS.channel}
-        query={{ serverId: channel.serverId, channelId: channel.id }}
+        apiUrl={CHAT_SOCKET_URLS.channel}
+        query={queryParams}
       />
     </div>
   );

@@ -48,8 +48,14 @@ export type ServerIdChannelIdParams = ServerIdParams & ChannelIdParams;
 export type ServerIdMemberIdParams = ServerIdParams & MemberIdParams;
 
 export type ChatTypes = "conversation" | "channel";
+export type ChatParamTypes = "conversationId" | "channelId";
 
 export const CHAT_API_URLS = {
+  conversation: "/api/messages",
+  channel: "/api/messages",
+};
+
+export const CHAT_SOCKET_URLS = {
   conversation: "/api/socket/messages",
   channel: "/api/socket/messages",
 };
