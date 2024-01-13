@@ -68,3 +68,7 @@ export type MessageEndpoint = {
   apiUrl: string;
   query: Record<string, any>;
 };
+
+export type IChatQueryData = {
+  pages: { items: MessageWithMemberWithProfile[] }[];
+};

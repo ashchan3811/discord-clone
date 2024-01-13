@@ -1,7 +1,7 @@
 import qs from "query-string";
 import { useInfiniteQuery } from "@tanstack/react-query";
 
-import { ChatParamTypes } from "@/types";
+import { ChatParamTypes, IChatQueryData } from "@/types";
 import { useSocket } from "@/components/providers/SocketProvider";
 
 type ChatQueryProps = {
@@ -45,7 +45,7 @@ export const useChatQuery = ({
     });
 
   return {
-    data,
+    data: data as IChatQueryData,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
