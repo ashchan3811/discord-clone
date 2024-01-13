@@ -5,6 +5,8 @@ import { LiveKitRoom, VideoConference } from "@livekit/components-react";
 import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Loader2 } from "lucide-react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import qs from "query-string";
 
 type MediaRoomProps = {
   chatId: string;
@@ -15,6 +17,11 @@ type MediaRoomProps = {
 export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
   const { user } = useUser();
   const [token, setToken] = useState("");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const isVideo = searchParams?.get("video") === "true";
 
   useEffect(() => {
     if (!user?.firstName || !user?.lastName) return;
@@ -43,6 +50,22 @@ export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
     );
   }
 
+  const onDisconnected = () => {
+    if (isVideo) {
+      const url = qs.stringifyUrl(
+        {
+          url: pathname || "",
+          query: {
+            video: isVideo ? undefined : true,
+          },
+        },
+        { skipNull: true },
+      );
+
+      router.push(url);
+    }
+  };
+
   return (
     <LiveKitRoom
       data-lk-theme="default"
@@ -50,6 +73,7 @@ export const MediaRoom = ({ chatId, video, audio }: MediaRoomProps) => {
       audio={audio}
       token={token}
       serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
+      onDisconnected={onDisconnected}
     >
       <VideoConference />
     </LiveKitRoom>
