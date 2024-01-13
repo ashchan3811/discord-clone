@@ -177,7 +177,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
         {!!members.length && (
           <div className={"mb-2"}>
             <ServerSection
-              label={"Video Channels"}
+              label={"Members"}
               sectionType={"member"}
               role={role}
               server={server}
