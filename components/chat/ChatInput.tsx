@@ -4,10 +4,11 @@ import React from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Plus, Smile } from "lucide-react";
+import { Loader2, Plus } from "lucide-react";
 import qs from "query-string";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 import { ChatTypes, MessageEndpoint } from "@/types";
 import { cn } from "@/lib/utils";
@@ -16,6 +17,8 @@ import { useModalStore } from "@/hooks/useModalStore";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+
+import EmojiPicker from "@/components/shared/EmojiPicker";
 
 type ChatInputProps = {
   name: string;
@@ -29,6 +32,8 @@ const formSchema = z.object({
 type FormType = z.infer<typeof formSchema>;
 
 const ChatInput = ({ apiUrl, query, type, name }: ChatInputProps) => {
+  const router = useRouter();
+
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,7 +43,7 @@ const ChatInput = ({ apiUrl, query, type, name }: ChatInputProps) => {
 
   const { onOpen } = useModalStore();
 
-  const isSubmitting = form.formState.isSubmitting;
+  const { isSubmitting } = form.formState;
 
   const onSubmit = async (data: FormType) => {
     try {
@@ -50,6 +55,7 @@ const ChatInput = ({ apiUrl, query, type, name }: ChatInputProps) => {
       await axios.post(url, data);
 
       form.reset();
+      router.refresh();
     } catch (error) {
       console.log(error);
       toast.error("Something went wrong");
@@ -88,6 +94,7 @@ const ChatInput = ({ apiUrl, query, type, name }: ChatInputProps) => {
                       "transition rounded-full",
                       "p-1 flex items-center justify-center",
                     )}
+                    disabled={isSubmitting}
                   >
                     <Plus className={"text-white dark:text-[#313338]"} />
                   </button>
@@ -104,7 +111,21 @@ const ChatInput = ({ apiUrl, query, type, name }: ChatInputProps) => {
                     {...field}
                   />
                   <div className={"absolute top-7 right-8"}>
-                    <Smile className={"text-zinc-500 dark:text-zinc-400"} />
+                    {isSubmitting && (
+                      <Loader2
+                        className={cn(
+                          "animate-spin text-zinc-500 dark:text-zinc-400",
+                        )}
+                      />
+                    )}
+
+                    {!isSubmitting && (
+                      <EmojiPicker
+                        onChange={(emoji) => {
+                          field.onChange(`${field.value} ${emoji}`);
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
               </FormControl>
