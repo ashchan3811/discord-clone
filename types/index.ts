@@ -53,3 +53,8 @@ export const CHAT_API_URLS = {
   conversation: "/api/socket/messages",
   channel: "/api/socket/messages",
 };
+
+export type MessageEndpoint = {
+  apiUrl: string;
+  query: Record<string, any>;
+};

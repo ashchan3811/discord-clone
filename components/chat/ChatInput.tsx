@@ -9,17 +9,18 @@ import qs from "query-string";
 import toast from "react-hot-toast";
 import axios from "axios";
 
-import { ChatTypes } from "@/types";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import { ChatTypes, MessageEndpoint } from "@/types";
 import { cn } from "@/lib/utils";
+
+import { useModalStore } from "@/hooks/useModalStore";
+
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 type ChatInputProps = {
-  apiUrl: string;
-  query: Record<string, any>;
   name: string;
   type: ChatTypes;
-};
+} & MessageEndpoint;
 
 const formSchema = z.object({
   content: z.string().min(1),
@@ -34,6 +35,8 @@ const ChatInput = ({ apiUrl, query, type, name }: ChatInputProps) => {
       content: "",
     },
   });
+
+  const { onOpen } = useModalStore();
 
   const isSubmitting = form.formState.isSubmitting;
 
@@ -70,7 +73,14 @@ const ChatInput = ({ apiUrl, query, type, name }: ChatInputProps) => {
                 <div className="relative p-4 pb-6">
                   <button
                     type={"button"}
-                    onClick={() => {}}
+                    onClick={() =>
+                      onOpen("messageUploadFile", {
+                        message: {
+                          apiUrl,
+                          query,
+                        },
+                      })
+                    }
                     className={cn(
                       "absolute top-7 left-8 h-[24px] w-[24px]",
                       "bg-zinc-500 dark:bg-zinc-400",

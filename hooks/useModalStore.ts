@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { Channel, ChannelType, Server } from "@prisma/client";
+import { MessageEndpoint } from "@/types";
 
 export type ModalType =
   | "createServer"
@@ -10,12 +11,14 @@ export type ModalType =
   | "deleteServer"
   | "createChannel"
   | "editChannel"
-  | "deleteChannel";
+  | "deleteChannel"
+  | "messageUploadFile";
 
 type ModalData = {
   server?: Server;
   channel?: Channel;
   channelType?: ChannelType;
+  message?: MessageEndpoint;
 };
 
 type ModalStore = {
