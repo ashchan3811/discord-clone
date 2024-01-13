@@ -16,3 +16,7 @@ export const formatDate = (
 
   return format(date, formatString);
 };
+
+export const getQueryKey = (id: string) => `chat:${id}`;
+export const getAddKey = (id: string) => `chat:${id}:messages:add`;
+export const getUpdateKey = (id: string) => `chat:${id}:messages:update`;

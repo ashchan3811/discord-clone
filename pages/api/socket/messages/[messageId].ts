@@ -6,6 +6,7 @@ import { getCurrentProfileServer } from "@/lib/actions";
 
 import db from "@/lib/db";
 import { MemberRole } from "@prisma/client";
+import { getUpdateKey } from "@/lib/utils";
 
 export default async function handler(
   req: NextApiRequest,
@@ -129,7 +130,7 @@ export default async function handler(
       });
     }
 
-    const updateKey = `cha:${channel.id}:message:update`;
+    const updateKey = getUpdateKey(channel.id);
     res?.socket?.server?.io?.emit(updateKey, message);
 
     return res.json(message);

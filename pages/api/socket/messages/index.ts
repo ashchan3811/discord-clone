@@ -2,6 +2,7 @@ import { NextApiRequest } from "next";
 import { NextApiResponseServerIo } from "@/types/socket-types";
 import { getCurrentProfileServer } from "@/lib/actions";
 import db from "@/lib/db";
+import { getAddKey } from "@/lib/utils";
 
 const messagesHandler = async (
   req: NextApiRequest,
@@ -85,7 +86,7 @@ const messagesHandler = async (
       },
     });
 
-    const channelKey = `chat:${channelId}:messages`;
+    const channelKey = getAddKey(channel.id);
     res?.socket?.server?.io?.emit(channelKey, message);
 
     return res.status(200).json(message);
