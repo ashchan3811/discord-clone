@@ -2,11 +2,13 @@ import React from "react";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-import { ServerIdChannelIdParams } from "@/types";
 import { getCurrentProfile } from "@/lib/actions";
 import db from "@/lib/db";
 
+import { CHAT_API_URLS, ServerIdChannelIdParams } from "@/types";
+
 import ChatHeader from "@/components/chat/ChatHeader";
+import ChatInput from "@/components/chat/ChatInput";
 
 const ChannelIdPage = async ({ params }: ServerIdChannelIdParams) => {
   const profile = await getCurrentProfile();
@@ -38,6 +40,15 @@ const ChannelIdPage = async ({ params }: ServerIdChannelIdParams) => {
         name={channel.name}
         serverId={channel.serverId}
         type={"channel"}
+      />
+
+      <div className="flex-1">Messages</div>
+
+      <ChatInput
+        name={channel.name}
+        type={"channel"}
+        apiUrl={CHAT_API_URLS.channel}
+        query={{ serverId: channel.serverId, channelId: channel.id }}
       />
     </div>
   );

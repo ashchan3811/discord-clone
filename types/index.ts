@@ -46,3 +46,10 @@ export type ISearchItem = {
 
 export type ServerIdChannelIdParams = ServerIdParams & ChannelIdParams;
 export type ServerIdMemberIdParams = ServerIdParams & MemberIdParams;
+
+export type ChatTypes = "conversation" | "channel";
+
+export const CHAT_API_URLS = {
+  conversation: "/api/socket/messages",
+  channel: "/api/socket/messages",
+};

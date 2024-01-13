@@ -2,6 +2,7 @@ import React from "react";
 import { Hash } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { ChatTypes } from "@/types";
 
 import UserAvatar from "@/components/shared/UserAvatar";
 import MobileToggle from "@/components/shared/MobileToggle";
@@ -10,7 +11,7 @@ import SocketIndicator from "@/components/shared/SocketIndicator";
 type ChatHeaderProps = {
   serverId: string;
   name: string;
-  type: "channel" | "conversation";
+  type: ChatTypes;
   imageUrl?: string;
 };
 
