@@ -10,8 +10,8 @@ export type ServerWithMembersWithProfiles = Server & {
   members: MemberWithProfile[];
 };
 
-export type MessageWithMembersWithProfiles = Message & {
-  members: MemberWithProfile[];
+export type MessageWithMemberWithProfile = Message & {
+  member: MemberWithProfile;
 };
 
 export type MemberWithProfile = Member & {

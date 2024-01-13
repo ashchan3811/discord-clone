@@ -7,12 +7,14 @@ import { Loader2, ServerCrash } from "lucide-react";
 import {
   ChatParamTypes,
   ChatTypes,
-  MessageWithMembersWithProfiles,
+  MessageWithMemberWithProfile,
 } from "@/types";
 
 import { useChatQuery } from "@/hooks/useChatQuery";
 
 import ChatWelcome from "@/components/chat/ChatWelcome";
+import ChatItem from "@/components/chat/ChatItem";
+import { formatDate } from "@/lib/utils";
 
 type ChatMessagesProps = {
   name: string;
@@ -77,8 +79,20 @@ const ChatMessages = ({
       <div className={"flex flex-col-reverse mt-auto"}>
         {data?.pages?.map((page, i) => (
           <Fragment key={i}>
-            {page.items.map((message: MessageWithMembersWithProfiles) => (
-              <div key={message.id}>{message.content}</div>
+            {page.items.map((message: MessageWithMemberWithProfile) => (
+              <ChatItem
+                key={message.id}
+                id={message.id}
+                content={message.content}
+                member={message.member}
+                timestamp={formatDate(message.createdAt)}
+                currentMember={member}
+                fileUrl={message.fileUrl}
+                deleted={message.deleted}
+                socketUrl={socketUrl}
+                socketQuery={socketQuery}
+                isUpdated={message.updatedAt !== message.createdAt}
+              />
             ))}
           </Fragment>
         ))}
