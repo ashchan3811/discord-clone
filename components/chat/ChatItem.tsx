@@ -10,11 +10,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
 import qs from "query-string";
 import toast from "react-hot-toast";
+import { useRouter, useParams } from "next/navigation";
 
 import { MemberWithProfile } from "@/types";
 import { manageMembersRoleIconMap } from "@/types/icon-maps";
 
 import { cn } from "@/lib/utils";
+
+import { useModalStore } from "@/hooks/useModalStore";
 
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -55,7 +58,10 @@ const ChatItem = ({
   isUpdated,
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = React.useState(false);
-  const [isDeleting, setIsDeleting] = React.useState(false);
+  const { onOpen } = useModalStore();
+
+  const router = useRouter();
+  const params = useParams();
 
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
@@ -68,7 +74,7 @@ const ChatItem = ({
     form.reset({
       content: content,
     });
-  }, [content]);
+  }, [content, form]);
 
   useEffect(() => {
     const escapeHandler = (e: KeyboardEvent) => {
@@ -114,6 +120,14 @@ const ChatItem = ({
     }
   };
 
+  const onMemberClick = () => {
+    if (member.id === currentMember.id) {
+      return;
+    }
+
+    router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+  };
+
   return (
     <div
       className={cn(
@@ -122,13 +136,17 @@ const ChatItem = ({
       )}
     >
       <div className={cn("group flex gap-x-2 items-start w-full")}>
-        <div className={"cursor-pointer hover:drop-shadow-md transition"}>
+        <div
+          className={"cursor-pointer hover:drop-shadow-md transition"}
+          onClick={onMemberClick}
+        >
           <UserAvatar src={member.profile?.imageUrl} />
         </div>
         <div className={cn("flex flex-col w-full")}>
           <div className={"flex items-center gap-x-2"}>
             <div className={"flex items-center"}>
               <p
+                onClick={onMemberClick}
                 className={
                   "font-semibold text-xm hover:underline cursor-pointer"
                 }
@@ -278,6 +296,11 @@ const ChatItem = ({
 
           <ActionTooltip label={"Delete"}>
             <Trash
+              onClick={() => {
+                onOpen("deleteMessage", {
+                  message: { apiUrl: `${socketUrl}/${id}`, query: socketQuery },
+                });
+              }}
               className={cn(
                 "cursor-pointer ml-auto w-4 h-4",
                 "text-rose-500 dark:text-rose-400",
