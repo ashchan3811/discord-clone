@@ -13,7 +13,7 @@ const SocketIndicator = () => {
         variant={"outline"}
         className={"bg-yellow-600 text-white border-none"}
       >
-        Fallback: Polling every 1s
+        <span className={"hidden sm:block"}>Fallback: Polling every 1s</span>
       </Badge>
     );
   }
@@ -23,7 +23,7 @@ const SocketIndicator = () => {
       variant={"outline"}
       className={"bg-emerald-600 text-white border-none"}
     >
-      Live: Real-time updates
+      <span className={"hidden sm:block"}>Live: Real-time updates</span>
     </Badge>
   );
 };
