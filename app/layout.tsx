@@ -10,6 +10,7 @@ import ToastrProvider from "@/components/providers/ToastrProvider";
 import ModalProvider from "@/components/providers/ModalProvider";
 import ThemeProvider from "@/components/providers/ThemeProvider";
 import SocketProvider from "@/components/providers/SocketProvider";
+import QueryProvider from "@/components/providers/QueryProvider";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -37,7 +38,7 @@ export default function RootLayout({
             <SocketProvider>
               <ToastrProvider />
               <ModalProvider />
-              {children}
+              <QueryProvider>{children}</QueryProvider>
             </SocketProvider>
           </ThemeProvider>
         </body>
