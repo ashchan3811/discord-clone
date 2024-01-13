@@ -6,6 +6,7 @@ import {
   CHAT_API_URLS,
   CHAT_SOCKET_URLS,
   ServerIdMemberIdParams,
+  VideoSearchParams,
 } from "@/types";
 import { getCurrentProfile, getOrCreateConversation } from "@/lib/actions";
 import db from "@/lib/db";
@@ -13,8 +14,12 @@ import db from "@/lib/db";
 import ChatHeader from "@/components/chat/ChatHeader";
 import ChatMessages from "@/components/chat/ChatMessages";
 import ChatInput from "@/components/chat/ChatInput";
+import { MediaRoom } from "@/components/shared/MediaRoom";
 
-const MemberIdPage = async ({ params }: ServerIdMemberIdParams) => {
+const MemberIdPage = async ({
+  params,
+  searchParams,
+}: ServerIdMemberIdParams & VideoSearchParams) => {
   const profile = await getCurrentProfile();
   if (!profile) {
     return redirectToSignIn();
@@ -56,28 +61,36 @@ const MemberIdPage = async ({ params }: ServerIdMemberIdParams) => {
         type={"conversation"}
       />
 
-      <ChatMessages
-        member={currentMember}
-        name={otherMember.profile.name}
-        chatId={conversation?.id}
-        apiUrl={CHAT_API_URLS.conversation}
-        socketUrl={CHAT_SOCKET_URLS.conversation}
-        socketQuery={{
-          conversationId: conversation?.id,
-        }}
-        paramKey={"conversationId"}
-        paramValue={conversation.id}
-        type={"conversation"}
-      />
+      {searchParams.video && (
+        <MediaRoom chatId={conversation.id} video={true} audio={true} />
+      )}
 
-      <ChatInput
-        name={otherMember.profile.name}
-        type={"conversation"}
-        apiUrl={CHAT_SOCKET_URLS.conversation}
-        query={{
-          conversationId: conversation?.id,
-        }}
-      />
+      {!searchParams.video && (
+        <>
+          <ChatMessages
+            member={currentMember}
+            name={otherMember.profile.name}
+            chatId={conversation?.id}
+            apiUrl={CHAT_API_URLS.conversation}
+            socketUrl={CHAT_SOCKET_URLS.conversation}
+            socketQuery={{
+              conversationId: conversation?.id,
+            }}
+            paramKey={"conversationId"}
+            paramValue={conversation.id}
+            type={"conversation"}
+          />
+
+          <ChatInput
+            name={otherMember.profile.name}
+            type={"conversation"}
+            apiUrl={CHAT_SOCKET_URLS.conversation}
+            query={{
+              conversationId: conversation?.id,
+            }}
+          />
+        </>
+      )}
     </div>
   );
 };

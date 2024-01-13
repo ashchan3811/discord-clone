@@ -22,6 +22,10 @@ export type PropsWithParams<T> = {
   params: T;
 };
 
+export type PropsWithSearchParams<T> = {
+  searchParams: T;
+};
+
 export type ServerIdParams = PropsWithParams<{
   serverId: string;
 }>;
@@ -33,6 +37,8 @@ export type ChannelIdParams = PropsWithParams<{
 export type MemberIdParams = PropsWithParams<{
   memberId: string;
 }>;
+
+export type VideoSearchParams = PropsWithSearchParams<{ video?: boolean }>;
 
 export type ISearchItemTypes = "channel" | "member";
 

@@ -7,6 +7,7 @@ import { ChatTypes } from "@/types";
 import UserAvatar from "@/components/shared/UserAvatar";
 import MobileToggle from "@/components/shared/MobileToggle";
 import SocketIndicator from "@/components/shared/SocketIndicator";
+import { ChatVideoButton } from "@/components/chat/ChatVideoButton";
 
 type ChatHeaderProps = {
   serverId: string;
@@ -36,6 +37,7 @@ const ChatHeader = ({ serverId, name, type, imageUrl }: ChatHeaderProps) => {
       <p className="font-semibold text-md text-black dark:text-white">{name}</p>
 
       <div className="ml-auto flex items-center">
+        {type == "conversation" && <ChatVideoButton />}
         <SocketIndicator />
       </div>
     </div>
