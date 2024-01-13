@@ -4,7 +4,7 @@ import React from "react";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Loader2, Plus } from "lucide-react";
+import { Loader2, Plus, Send } from "lucide-react";
 import qs from "query-string";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -19,6 +19,7 @@ import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
 import EmojiPicker from "@/components/shared/EmojiPicker";
+import ActionTooltip from "@/components/shared/ActionTooltip";
 
 type ChatInputProps = {
   name: string;
@@ -96,7 +97,9 @@ const ChatInput = ({ apiUrl, query, type, name }: ChatInputProps) => {
                     )}
                     disabled={isSubmitting}
                   >
-                    <Plus className={"text-white dark:text-[#313338]"} />
+                    <ActionTooltip label={"Add an Attachment"} side={"top"}>
+                      <Plus className={"text-white dark:text-[#313338]"} />
+                    </ActionTooltip>
                   </button>
                   <Input
                     disabled={isSubmitting}
@@ -110,22 +113,34 @@ const ChatInput = ({ apiUrl, query, type, name }: ChatInputProps) => {
                     placeholder={placeholderMap[type]}
                     {...field}
                   />
-                  <div className={"absolute top-7 right-8"}>
-                    {isSubmitting && (
-                      <Loader2
-                        className={cn(
-                          "animate-spin text-zinc-500 dark:text-zinc-400",
-                        )}
-                      />
-                    )}
-
-                    {!isSubmitting && (
+                  <div className={"absolute top-[24px] right-8"}>
+                    <div className={"flex items-center gap-x-2"}>
                       <EmojiPicker
                         onChange={(emoji) => {
                           field.onChange(`${field.value} ${emoji}`);
                         }}
                       />
-                    )}
+
+                      <button
+                        type={"button"}
+                        onClick={form.handleSubmit(onSubmit)}
+                        className={cn(
+                          "text-zinc-500 dark:text-zinc-400",
+                          "hover:text-zinc-600 dark:hover:text-zinc-300",
+                          "transition rounded-full",
+                          "p-1 flex items-center justify-center",
+                        )}
+                        disabled={isSubmitting}
+                      >
+                        {isSubmitting ? (
+                          <Loader2 className={"animate-spin"} />
+                        ) : (
+                          <ActionTooltip label={"Send"} side={"top"}>
+                            <Send />
+                          </ActionTooltip>
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
               </FormControl>
