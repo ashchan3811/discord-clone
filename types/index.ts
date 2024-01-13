@@ -1,4 +1,4 @@
-import { Member, Profile, Server } from "@prisma/client";
+import { Member, Message, Profile, Server } from "@prisma/client";
 import React from "react";
 
 export type InputPropTypes<T> = {
@@ -7,6 +7,10 @@ export type InputPropTypes<T> = {
 };
 
 export type ServerWithMembersWithProfiles = Server & {
+  members: MemberWithProfile[];
+};
+
+export type MessageWithMembersWithProfiles = Message & {
   members: MemberWithProfile[];
 };
 
