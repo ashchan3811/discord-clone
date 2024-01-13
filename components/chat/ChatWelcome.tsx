@@ -15,7 +15,7 @@ type ChatWelcomeProps = {
 const ChatWelcome = ({ type, name }: ChatWelcomeProps) => {
   const descriptionMap = {
     channel: `This is the start of the #${name} channel.`,
-    conversation: "This is the start of your conversation with ",
+    conversation: `This is the start of your conversation with ${name}.`,
   };
 
   const welcomeMessageMap = {

@@ -55,12 +55,12 @@ export type ChatTypes = "conversation" | "channel";
 export type ChatParamTypes = "conversationId" | "channelId";
 
 export const CHAT_API_URLS = {
-  conversation: "/api/messages",
+  conversation: "/api/direct-messages",
   channel: "/api/messages",
 };
 
 export const CHAT_SOCKET_URLS = {
-  conversation: "/api/socket/messages",
+  conversation: "/api/socket/direct-messages",
   channel: "/api/socket/messages",
 };
 

@@ -1,12 +1,15 @@
 import { NextApiRequest } from "next";
+import { MemberRole } from "@prisma/client";
 
 import { NextApiResponseServerIo } from "@/types/socket-types";
 
-import { getCurrentProfileServer } from "@/lib/actions";
-
 import db from "@/lib/db";
-import { MemberRole } from "@prisma/client";
 import { getUpdateKey } from "@/lib/utils";
+
+import {
+  getConversationByProfileId,
+  getCurrentProfileServer,
+} from "@/lib/actions";
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,54 +25,31 @@ export default async function handler(
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const { messageId, serverId, channelId } = req.query;
+    const { directMessageId, conversationId } = req.query;
 
-    if (!serverId) {
-      return res.status(400).json({ message: "Server ID is missing" });
+    if (!conversationId) {
+      return res.status(400).json({ message: "Conversation ID is missing" });
     }
 
-    const server = await db.server.findFirst({
-      where: {
-        id: serverId as string,
-        members: {
-          some: {
-            profileId: profile.id,
-          },
-        },
-      },
-      include: {
-        members: true,
-      },
-    });
-
-    if (!server) {
-      return res.status(404).json({ message: "Server not found" });
-    }
-
-    if (!channelId) {
-      return res.status(400).json({ message: "Channel ID is missing" });
-    }
-
-    const channel = await db.channel.findFirst({
-      where: {
-        id: channelId as string,
-        serverId: server.id,
-      },
-    });
-
-    if (!channel) {
-      return res.status(404).json({ message: "Channel not found" });
-    }
-
-    const { content } = req.body;
-
-    const member = server.members.find(
-      (member) => member.profileId === profile.id,
+    const conversation = await getConversationByProfileId(
+      conversationId as string,
+      profile.id,
     );
+
+    if (!conversation) {
+      return res.status(404).json({ message: "Conversation not found" });
+    }
+
+    const member =
+      conversation.memberOne?.profileId === profile.id
+        ? conversation.memberOne
+        : conversation.memberTwo;
 
     if (!member) {
       return res.status(404).json({ message: "Member not found" });
     }
+
+    const { content } = req.body;
 
     const includeOptions = {
       member: {
@@ -79,19 +59,19 @@ export default async function handler(
       },
     };
 
-    let message = await db.message.findFirst({
+    let directMessage = await db.directMessage.findFirst({
       where: {
-        id: messageId as string,
-        channelId: channel.id,
+        id: directMessageId as string,
+        conversationId: conversation.id,
       },
       include: includeOptions,
     });
 
-    if (!message || message.deleted) {
-      return res.status(404).json({ message: "Message not found" });
+    if (!directMessage || directMessage.deleted) {
+      return res.status(404).json({ message: "Direct Message not found" });
     }
 
-    const isMessageOwner = message.memberId == member.id;
+    const isMessageOwner = directMessage.memberId == member.id;
     const isAdmin = member.role === MemberRole.ADMIN;
     const isModerator = member.role === MemberRole.MODERATOR;
     const canModify = isMessageOwner || isAdmin || isModerator;
@@ -101,9 +81,9 @@ export default async function handler(
     }
 
     if (req.method === "DELETE") {
-      message = await db.message.update({
+      directMessage = await db.directMessage.update({
         where: {
-          id: message.id,
+          id: directMessage.id,
         },
         data: {
           fileUrl: null,
@@ -123,9 +103,9 @@ export default async function handler(
         return res.status(400).json({ message: "Content is missing" });
       }
 
-      message = await db.message.update({
+      directMessage = await db.directMessage.update({
         where: {
-          id: message.id,
+          id: directMessage.id,
         },
         data: {
           content,
@@ -134,12 +114,12 @@ export default async function handler(
       });
     }
 
-    const updateKey = getUpdateKey(channel.id);
-    res?.socket?.server?.io?.emit(updateKey, message);
+    const updateKey = getUpdateKey(conversation.id);
+    res?.socket?.server?.io?.emit(updateKey, directMessage);
 
-    return res.json(message);
+    return res.json(directMessage);
   } catch (error) {
-    console.error("MESSAGE ID ERROR", error);
+    console.error("DIRECT MESSAGE ID ERROR", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }

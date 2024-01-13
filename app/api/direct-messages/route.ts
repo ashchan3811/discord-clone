@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Message } from "@prisma/client";
+import { DirectMessage } from "@prisma/client";
 
 import { getCurrentProfile } from "@/lib/actions";
 import db from "@/lib/db";
@@ -15,23 +15,23 @@ export async function GET(req: Request) {
 
     const { searchParams } = new URL(req.url);
     const cursor = searchParams.get("cursor");
-    const channelId = searchParams.get("channelId");
+    const conversationId = searchParams.get("conversationId");
 
-    if (!channelId) {
-      return new NextResponse("Channel ID is missing", { status: 400 });
+    if (!conversationId) {
+      return new NextResponse("Conversation ID is missing", { status: 400 });
     }
 
-    let messages: Message[];
+    let messages: DirectMessage[];
 
     if (cursor) {
-      messages = await db.message.findMany({
+      messages = await db.directMessage.findMany({
         take: MESSAGES_PER_PAGE,
         skip: 1,
         cursor: {
           id: cursor,
         },
         where: {
-          channelId,
+          conversationId,
         },
         include: {
           member: {
@@ -45,10 +45,10 @@ export async function GET(req: Request) {
         },
       });
     } else {
-      messages = await db.message.findMany({
+      messages = await db.directMessage.findMany({
         take: MESSAGES_PER_PAGE,
         where: {
-          channelId,
+          conversationId,
         },
         include: {
           member: {
@@ -73,7 +73,7 @@ export async function GET(req: Request) {
       nextCursor,
     });
   } catch (err) {
-    console.log("MESSAGES GET", err);
+    console.log("DIRECT MESSAGES GET", err);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

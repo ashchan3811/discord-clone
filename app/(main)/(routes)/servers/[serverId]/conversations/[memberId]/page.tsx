@@ -2,11 +2,17 @@ import React from "react";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-import { ServerIdMemberIdParams } from "@/types";
+import {
+  CHAT_API_URLS,
+  CHAT_SOCKET_URLS,
+  ServerIdMemberIdParams,
+} from "@/types";
 import { getCurrentProfile, getOrCreateConversation } from "@/lib/actions";
 import db from "@/lib/db";
 
 import ChatHeader from "@/components/chat/ChatHeader";
+import ChatMessages from "@/components/chat/ChatMessages";
+import ChatInput from "@/components/chat/ChatInput";
 
 const MemberIdPage = async ({ params }: ServerIdMemberIdParams) => {
   const profile = await getCurrentProfile();
@@ -48,6 +54,29 @@ const MemberIdPage = async ({ params }: ServerIdMemberIdParams) => {
         name={otherMember.profile.name}
         serverId={params.serverId}
         type={"conversation"}
+      />
+
+      <ChatMessages
+        member={currentMember}
+        name={otherMember.profile.name}
+        chatId={conversation?.id}
+        apiUrl={CHAT_API_URLS.conversation}
+        socketUrl={CHAT_SOCKET_URLS.conversation}
+        socketQuery={{
+          conversationId: conversation?.id,
+        }}
+        paramKey={"conversationId"}
+        paramValue={conversation.id}
+        type={"conversation"}
+      />
+
+      <ChatInput
+        name={otherMember.profile.name}
+        type={"conversation"}
+        apiUrl={CHAT_SOCKET_URLS.conversation}
+        query={{
+          conversationId: conversation?.id,
+        }}
       />
     </div>
   );
